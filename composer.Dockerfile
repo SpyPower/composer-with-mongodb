@@ -9,4 +9,4 @@ RUN apk --update add \
 RUN pecl install mongodb \
    && pecl clear-cache
 
-RUN echo "extension=mongodb.so" > /usr/local/etc/php/php.ini
+RUN echo "extension=mongodb.so" > /usr/local/etc/php/conf.d/mongo.ini
