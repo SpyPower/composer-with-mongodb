@@ -1,17 +1,12 @@
-# FROM composer
+FROM composer
+RUN apk --update add \
+   alpine-sdk \
+   openssl-dev \
+   php7-pear \
+   php7-dev \
+   && rm -rf /var/cache/apk/*
 
-# RUN apk update && apk add autoconf openssl-dev g++ make && \
-#    pecl install mongodb && \
-#    docker-php-ext-enable mongo && \
-#    apk del --purge autoconf openssl-dev g++ make
+RUN pecl install mongodb \
+   && pecl clear-cache
 
-FROM php:7.3-fpm
-
-RUN apt-get update && apt-get install -y libmcrypt-dev \
-   mysql-client libmagickwand-dev --no-install-recommends \
-   && pecl install imagick \
-   && docker-php-ext-enable imagick \
-   && docker-php-ext-install mcrypt pdo_mysql
-
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN echo "extension=mongodb.so" > /usr/local/etc/php/php.ini
